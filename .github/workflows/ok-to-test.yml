@@ -30,5 +30,4 @@ jobs:
           commands: |
             ok-to-test
             perf-test
-            ci-merge-check
           permission: write

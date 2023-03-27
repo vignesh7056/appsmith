@@ -17,6 +17,8 @@ describe("Table Widget property pane feature validation", function () {
       "exist",
     );
 
+    // Cleanup
+    cy.UncheckWidgetProperties(commonlocators.serverSidePaginationCheckbox);
     cy.closePropertyPane();
   });
 
@@ -42,7 +44,7 @@ describe("Table Widget property pane feature validation", function () {
     cy.get(".t--table-widget-page-input .bp3-input").clear().type("1{enter}");
     cy.get(commonlocators.bodyTextStyle).should("have.text", "true false");
 
-    cy.wait(15000);
+    cy.closePropertyPane();
   });
 
   it("3. updates previous and next pagination propeties properly in server side pagination mode", function () {
@@ -60,5 +62,9 @@ describe("Table Widget property pane feature validation", function () {
     // Click on previous page
     cy.get(".t--table-widget-prev-page").click();
     cy.get(commonlocators.bodyTextStyle).should("have.text", "true false");
+
+    // Clean up
+    cy.UncheckWidgetProperties(commonlocators.serverSidePaginationCheckbox);
+    cy.closePropertyPane();
   });
 });

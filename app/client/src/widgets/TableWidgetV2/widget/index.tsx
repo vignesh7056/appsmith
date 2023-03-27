@@ -142,6 +142,8 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
       isAddRowInProgress: false,
       newRowContent: undefined,
       newRow: undefined,
+      previousPageButtonClicked: false,
+      nextPageButtonClicked: false,
     };
   }
 
@@ -1344,6 +1346,8 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
   };
 
   updatePageNumber = (pageNo: number, event?: EventType) => {
+    this.updatePaginationButtonMetaProperties(event);
+
     if (event) {
       this.props.updateWidgetMetaProperty("pageNo", pageNo, {
         triggerPropertyName: "onPageChange",
@@ -1361,8 +1365,36 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
     }
   };
 
+  updatePaginationButtonMetaProperties = (direction?: EventType) => {
+    let previousButtonFlag = false;
+    let nextButtonFlag = false;
+
+    if (direction) {
+      switch (direction) {
+        case EventType.ON_NEXT_PAGE: {
+          nextButtonFlag = true;
+          break;
+        }
+        case EventType.ON_PREV_PAGE: {
+          previousButtonFlag = true;
+          break;
+        }
+      }
+    }
+
+    this.props.updateWidgetMetaProperty(
+      "previousPageButtonClicked",
+      previousButtonFlag,
+    );
+    this.props.updateWidgetMetaProperty(
+      "nextPageButtonClicked",
+      nextButtonFlag,
+    );
+  };
+
   handleNextPageClick = () => {
     const pageNo = (this.props.pageNo || 1) + 1;
+    this.updatePaginationButtonMetaProperties(EventType.ON_NEXT_PAGE);
 
     this.props.updateWidgetMetaProperty("pageNo", pageNo, {
       triggerPropertyName: "onPageChange",
@@ -1405,6 +1437,8 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
     const pageNo = (this.props.pageNo || 1) - 1;
 
     if (pageNo >= 1) {
+      this.updatePaginationButtonMetaProperties(EventType.ON_PREV_PAGE);
+
       this.props.updateWidgetMetaProperty("pageNo", pageNo, {
         triggerPropertyName: "onPageChange",
         dynamicString: this.props.onPageChange,

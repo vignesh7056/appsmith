@@ -111,6 +111,11 @@ const ReactTableComponent = lazy(() =>
   retryPromise(() => import("../component")),
 );
 
+enum PaginationDirection {
+  PREVIOUS_PAGE = "PREVIOUS_PAGE",
+  NEXT_PAGE = "NEXT_PAGE",
+}
+
 class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
   inlineEditTimer: number | null = null;
 
@@ -142,8 +147,8 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
       isAddRowInProgress: false,
       newRowContent: undefined,
       newRow: undefined,
-      previousPageButtonClicked: false,
-      nextPageButtonClicked: false,
+      previousPageVisited: false,
+      nextPageVisited: false,
     };
   }
 
@@ -1346,7 +1351,11 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
   };
 
   updatePageNumber = (pageNo: number, event?: EventType) => {
-    this.updatePaginationButtonMetaProperties(event);
+    const paginationDirection =
+      event == EventType.ON_NEXT_PAGE
+        ? PaginationDirection.NEXT_PAGE
+        : PaginationDirection.PREVIOUS_PAGE;
+    this.updatePaginationDirectionFlags(paginationDirection);
 
     if (event) {
       this.props.updateWidgetMetaProperty("pageNo", pageNo, {
@@ -1365,17 +1374,17 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
     }
   };
 
-  updatePaginationButtonMetaProperties = (direction?: EventType) => {
+  updatePaginationDirectionFlags = (direction?: PaginationDirection) => {
     let previousButtonFlag = false;
     let nextButtonFlag = false;
 
     if (direction) {
       switch (direction) {
-        case EventType.ON_NEXT_PAGE: {
+        case PaginationDirection.NEXT_PAGE: {
           nextButtonFlag = true;
           break;
         }
-        case EventType.ON_PREV_PAGE: {
+        case PaginationDirection.PREVIOUS_PAGE: {
           previousButtonFlag = true;
           break;
         }
@@ -1383,18 +1392,15 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
     }
 
     this.props.updateWidgetMetaProperty(
-      "previousPageButtonClicked",
+      "previousPageVisited",
       previousButtonFlag,
     );
-    this.props.updateWidgetMetaProperty(
-      "nextPageButtonClicked",
-      nextButtonFlag,
-    );
+    this.props.updateWidgetMetaProperty("nextPageVisited", nextButtonFlag);
   };
 
   handleNextPageClick = () => {
     const pageNo = (this.props.pageNo || 1) + 1;
-    this.updatePaginationButtonMetaProperties(EventType.ON_NEXT_PAGE);
+    this.updatePaginationDirectionFlags(PaginationDirection.NEXT_PAGE);
 
     this.props.updateWidgetMetaProperty("pageNo", pageNo, {
       triggerPropertyName: "onPageChange",
@@ -1437,7 +1443,7 @@ class TableWidgetV2 extends BaseWidget<TableWidgetProps, WidgetState> {
     const pageNo = (this.props.pageNo || 1) - 1;
 
     if (pageNo >= 1) {
-      this.updatePaginationButtonMetaProperties(EventType.ON_PREV_PAGE);
+      this.updatePaginationDirectionFlags(PaginationDirection.PREVIOUS_PAGE);
 
       this.props.updateWidgetMetaProperty("pageNo", pageNo, {
         triggerPropertyName: "onPageChange",

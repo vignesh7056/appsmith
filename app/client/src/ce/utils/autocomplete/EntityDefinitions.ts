@@ -154,10 +154,8 @@ export const entityDefinitions = {
     tableHeaders: generateTypeDef(widget.tableHeaders),
     newRow: generateTypeDef(widget.newRow),
     isAddRowInProgress: "bool",
-    previousPageButtonClicked: generateTypeDef(
-      widget.previousPageButtonClicked,
-    ),
-    nextPageButtonClicked: generateTypeDef(widget.nextPageButtonClicked),
+    previousPageVisited: generateTypeDef(widget.previousPageVisited),
+    nextPageVisited: generateTypeDef(widget.nextPageButtonClicked),
   }),
   VIDEO_WIDGET: {
     "!doc":

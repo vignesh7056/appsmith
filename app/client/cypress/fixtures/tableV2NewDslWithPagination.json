@@ -24,7 +24,7 @@
                 "boxShadow": "{{appsmith.theme.boxShadow.appBoxShadow}}",
                 "isVisibleDownload": true,
                 "iconSVG": "/static/media/icon.db8a9cbd2acd22a31ea91cc37ea2a46c.svg",
-                "topRow": 83,
+                "topRow": 1,
                 "isSortable": true,
                 "type": "TABLE_WIDGET_V2",
                 "inlineEditingSaveOption": "ROW_LEVEL",
@@ -88,7 +88,7 @@
                         "key": "primaryColumns.orderAmount.computedValue"
                     }
                 ],
-                "leftColumn": 16,
+                "leftColumn": 1,
                 "delimiter": ",",
                 "defaultSelectedRowIndex": 0,
                 "accentColor": "{{appsmith.theme.colors.primaryColor}}",
@@ -136,7 +136,7 @@
                 ],
                 "dynamicPropertyPathList": [],
                 "displayName": "Table",
-                "bottomRow": 111,
+                "bottomRow": 50,
                 "columnWidthMap": {
                     "task": 245,
                     "step": 62,
@@ -282,6 +282,35 @@
                 "isVisibleSearch": true,
                 "isVisiblePagination": true,
                 "verticalAlignment": "CENTER"
+            },
+            {
+                "widgetName": "Text1",
+                "rightColumn": 60,
+                "textAlign": "LEFT",
+                "displayName": "Text",
+                "widgetId": "16zkg2v0na",
+                "topRow": 1,
+                "bottomRow": 5,
+                "parentRowSpace": 10,
+                "isVisible": true,
+                "type": "TEXT_WIDGET",
+                "fontStyle": "BOLD",
+                "textColor": "#231F20",
+                "version": 1,
+                "hideCard": false,
+                "parentId": "0",
+                "isLoading": false,
+                "parentColumnSpace": 17.28125,
+                "dynamicTriggerPathList": [],
+                "leftColumn": 51,
+                "dynamicBindingPathList": [
+                    {
+                        "key": "text"
+                    }
+                ],
+                "fontSize": "PARAGRAPH",
+                "text": "{{Table1.previousPageVisited}} {{Table1.nextPageVisited}}",
+                "key": "r76o6tqjaz"
             }
         ]
     }
